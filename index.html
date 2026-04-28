@@ -797,6 +797,112 @@ thead tr{
 .badge-recovery{background:var(--sky-dim);color:var(--sky);border:1px solid rgba(74,158,255,0.2)}
 .badge-gray{background:var(--surface-2);color:var(--text-sub);border:1px solid var(--border)}
 .res-chip.selected{background:var(--accent-dim);border-color:var(--border-accent);color:var(--accent)}
+.workflow-select{
+  appearance:none;-webkit-appearance:none;
+  min-width:170px;
+  border:1px solid var(--border-accent);
+  border-radius:999px;
+  padding:9px 38px 9px 34px;
+  font-family:var(--font);
+  font-size:12px;
+  font-weight:800;
+  color:var(--accent);
+  background:
+    radial-gradient(circle at 18px 50%,currentColor 0 4px,transparent 5px),
+    linear-gradient(45deg,transparent 50%,currentColor 50%) calc(100% - 20px) 52%/6px 6px no-repeat,
+    linear-gradient(135deg,rgba(255,255,255,0.96),var(--accent-dim));
+  box-shadow:0 10px 24px rgba(20,34,54,0.08),0 1px 0 rgba(255,255,255,0.9) inset;
+  outline:none;
+  transition:border-color .18s,box-shadow .18s,transform .18s,background .18s;
+}
+.workflow-select:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(20,34,54,0.12),0 0 0 3px rgba(15,159,138,0.08)}
+.workflow-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim),0 14px 30px rgba(20,34,54,0.12)}
+.workflow-select.workflow-published{color:var(--green);border-color:rgba(0,232,122,0.28);background:radial-gradient(circle at 18px 50%,currentColor 0 4px,transparent 5px),linear-gradient(45deg,transparent 50%,currentColor 50%) calc(100% - 20px) 52%/6px 6px no-repeat,linear-gradient(135deg,#fff,var(--green-dim))}
+.workflow-select.workflow-reviewed{color:var(--sky);border-color:rgba(74,158,255,0.28);background:radial-gradient(circle at 18px 50%,currentColor 0 4px,transparent 5px),linear-gradient(45deg,transparent 50%,currentColor 50%) calc(100% - 20px) 52%/6px 6px no-repeat,linear-gradient(135deg,#fff,var(--sky-dim))}
+.workflow-select.workflow-draft{color:var(--amber);border-color:rgba(255,176,32,0.32);background:radial-gradient(circle at 18px 50%,currentColor 0 4px,transparent 5px),linear-gradient(45deg,transparent 50%,currentColor 50%) calc(100% - 20px) 52%/6px 6px no-repeat,linear-gradient(135deg,#fff,var(--amber-dim))}
+.workflow-select.workflow-patient-submitted{color:var(--accent);border-color:var(--border-accent)}
+
+/* ====== PRO DESIGN PASS ====== */
+body.role-doctor{--role-a:#0F9F8A;--role-b:#2D6CDF;--role-soft:rgba(15,159,138,0.12);--role-ring:rgba(15,159,138,0.28)}
+body.role-resident{--role-a:#2D6CDF;--role-b:#7C3AED;--role-soft:rgba(45,108,223,0.12);--role-ring:rgba(45,108,223,0.25)}
+body.role-doctor .page-title,body.role-resident .page-title{
+  background:linear-gradient(135deg,#142236 0%,var(--role-a) 48%,var(--role-b) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+body.role-doctor .sidebar::before,body.role-resident .sidebar::before{
+  background:linear-gradient(180deg,var(--role-a),var(--role-b));
+}
+body.role-doctor .sb-logo,body.role-doctor .tb-avatar,body.role-doctor .res-detail-av,
+body.role-resident .sb-logo,body.role-resident .tb-avatar,body.role-resident .res-detail-av{
+  background:linear-gradient(135deg,var(--role-a),var(--role-b));
+  box-shadow:0 14px 34px rgba(45,108,223,0.22);
+}
+.main{background:linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0))}
+.page{padding:30px clamp(18px,3vw,34px)}
+.page-hdr{align-items:flex-end;margin-bottom:24px}
+.page-title{font-size:clamp(22px,2.2vw,30px);line-height:1.05}
+.page-sub{font-size:13px;max-width:760px}
+.card,.stat-card,.res-card,.service-tile,.list-item,.tl-card,.note-card,.appt-card,.vital-box{
+  border-radius:16px;
+  border:1px solid rgba(24,44,70,0.11);
+  box-shadow:0 1px 0 rgba(255,255,255,0.82) inset,0 16px 40px rgba(20,34,54,0.08);
+}
+.card::before,.stat-card::before,.res-card::before,.service-tile::before,.resident-ai-card::before{
+  height:2px;opacity:.52;background:linear-gradient(90deg,var(--role-a,var(--accent)),var(--role-b,var(--sky)));
+}
+.card-hdr{gap:12px}
+.card-ttl{font-size:14px;line-height:1.2}
+.stat-card{padding:18px;min-height:150px;isolation:isolate}
+.stat-card::before{opacity:.85}
+.stat-card::after{
+  opacity:.7;background:linear-gradient(135deg,var(--role-soft,var(--accent-dim)),rgba(255,255,255,0));
+}
+.stat-ico{
+  width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,var(--role-soft,var(--accent-dim)),rgba(255,255,255,0.72));
+  color:var(--role-a,var(--accent));border-color:var(--role-ring,var(--border-accent));
+}
+.stat-val{font-size:clamp(22px,2.4vw,30px)}
+.stat-sub{font-size:11px;color:var(--text-muted);line-height:1.35;margin-top:6px;max-width:180px}
+.ai-grid{grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr);gap:18px}
+.ai-hero{min-height:320px;display:flex;flex-direction:column;justify-content:space-between}
+body.role-doctor .ai-hero{
+  background:linear-gradient(135deg,#075F55 0%,#0D5F96 62%,#23466D 100%);
+}
+body.role-resident .ai-hero{
+  background:linear-gradient(135deg,#2356B8 0%,#5B3CC4 58%,#0F9F8A 100%);
+}
+.ai-hero .btn-primary{
+  background:rgba(255,255,255,0.94);color:#0D3B5C;box-shadow:0 14px 28px rgba(0,0,0,0.16);
+}
+.trend-chart{height:240px}
+.chart-row,.queue-row,.info-row{border-bottom-color:rgba(24,44,70,0.07)}
+.queue-row{grid-template-columns:72px 1fr auto}
+.role-shell{width:min(1060px,100%);gap:20px}
+.role-intro{padding:34px 38px}
+.role-intro h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.01em}
+.role-intro p{font-size:15px;max-width:760px}
+.role-card{
+  min-height:286px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;
+  border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,0.92),rgba(247,251,253,0.82));
+}
+.role-card::before{opacity:1;background:linear-gradient(135deg,rgba(255,255,255,0),var(--role-soft,rgba(15,159,138,0.08)))}
+.role-card.doctor{--role-a:#0F9F8A;--role-b:#2D6CDF;--role-soft:rgba(15,159,138,0.14)}
+.role-card.patient{--role-a:#2D6CDF;--role-b:#7C3AED;--role-soft:rgba(45,108,223,0.14)}
+.role-card:hover{border-color:var(--role-ring,var(--border-accent));box-shadow:0 28px 78px rgba(20,34,54,0.16),0 16px 42px var(--role-soft)}
+.role-visual{
+  width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+  font-size:27px;color:#fff;background:linear-gradient(135deg,var(--role-a),var(--role-b));
+  box-shadow:0 18px 36px var(--role-soft);margin-bottom:18px;
+}
+.role-card h2{font-size:24px;margin-top:0}
+.role-card p{margin-bottom:16px;max-width:420px}
+.role-points{display:grid;gap:8px;margin:0 0 20px;color:var(--text-sub);font-size:12px}
+.role-points span{display:flex;align-items:center;gap:8px}
+.role-points span::before{content:'✓';width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:var(--role-soft);color:var(--role-a);font-size:11px;font-weight:900}
+.role-card .btn{margin-top:auto}
+.dash-extra .empty-state{padding:30px 16px}
+@media(max-width:900px){.ai-grid{grid-template-columns:1fr}.page{padding:18px}.role-card{min-height:auto}}
 </style>
 </head>
 <body>
@@ -807,16 +913,26 @@ thead tr{
       <h1>Choose Your EHMR AI View</h1>
       <p>EHMR AI separates clinical decision tools from patient-facing health records. Select a role to open the right dashboard experience.</p>
     </div>
-    <div class="role-card" onclick="selectRole('doctor')">
+    <div class="role-card doctor" onclick="selectRole('doctor')">
+      <div class="role-visual">🩺</div>
       <span class="role-chip">🩺 Doctor / Clinical Team</span>
       <h2>Doctor Dashboard</h2>
       <p>Access critical alerts, resident risk review, AI insights, labs, medication records, timelines, and clinical audit history.</p>
+      <div class="role-points">
+        <span>Clinical queues and escalation context</span>
+        <span>Vitals, eMAR, labs, and audit controls</span>
+      </div>
       <button class="btn btn-primary btn-sm">Enter Doctor View →</button>
     </div>
-    <div class="role-card" onclick="selectRole('resident')">
+    <div class="role-card patient" onclick="selectRole('resident')">
+      <div class="role-visual">🏥</div>
       <span class="role-chip">🏥 Resident / Patient / Family</span>
       <h2>Patient Dashboard</h2>
       <p>View personal health summary, AI explanation, doctor visits, care plan, insurance policies, ABHA, and government scheme readiness.</p>
+      <div class="role-points">
+        <span>Personal next steps and visit readiness</span>
+        <span>Appointments, services, ABHA, and coverage</span>
+      </div>
       <button class="btn btn-primary btn-sm">Enter Patient View →</button>
     </div>
   </div>
@@ -852,17 +968,17 @@ thead tr{
         <div class="sb-section" data-roles="doctor">Doctor Tools</div>
         <div class="sb-item" data-page="critical" data-roles="doctor" onclick="nav('critical')"><span class="sb-item-ico">🚨</span><span class="sb-item-txt">Critical Review</span></div>
         <div class="sb-item" data-page="book" data-roles="doctor,resident" onclick="nav('book')"><span class="sb-item-ico">📅</span><span class="sb-item-txt">Book & Schedule</span></div>
-        <div class="sb-item" data-page="vitals" data-roles="doctor" onclick="nav('vitals')"><span class="sb-item-ico">💓</span><span class="sb-item-txt">Vitals Monitor</span></div>
+        <div class="sb-item" data-page="vitals" data-roles="doctor,resident" data-doctor-label="Vitals Monitor" data-resident-label="Add Vitals" onclick="nav('vitals')"><span class="sb-item-ico">💓</span><span class="sb-item-txt">Vitals Monitor</span></div>
         <div class="sb-item" data-page="emar" data-roles="doctor" onclick="nav('emar')"><span class="sb-item-ico">💊</span><span class="sb-item-txt">eMAR</span></div>
         <div class="sb-item" data-page="notes" data-roles="doctor" onclick="nav('notes')"><span class="sb-item-ico">📝</span><span class="sb-item-txt">Shift Notes</span></div>
-        <div class="sb-item" data-page="labs" data-roles="doctor" onclick="nav('labs')"><span class="sb-item-ico">🔬</span><span class="sb-item-txt">Lab Reports</span></div>
+        <div class="sb-item" data-page="labs" data-roles="doctor,resident" data-doctor-label="Lab Reports" data-resident-label="Add Lab Reports" onclick="nav('labs')"><span class="sb-item-ico">🔬</span><span class="sb-item-txt">Lab Reports</span></div>
         <div class="sb-item" data-page="ledger" data-roles="doctor" onclick="nav('ledger')"><span class="sb-item-ico">📋</span><span class="sb-item-txt">Ledger & Resources</span></div>
         <div class="sb-section" data-roles="doctor,resident">Records</div>
         <div class="sb-item" data-page="timeline" data-roles="doctor" onclick="nav('timeline')"><span class="sb-item-ico">📈</span><span class="sb-item-txt">Timeline</span></div>
         <div class="sb-item" data-page="careplan" data-roles="doctor,resident" onclick="nav('careplan')"><span class="sb-item-ico">📋</span><span class="sb-item-txt">Care Plan</span></div>
         <div class="sb-item" data-page="appointments" data-roles="doctor,resident" onclick="nav('appointments')"><span class="sb-item-ico">📅</span><span class="sb-item-txt">Appointments</span></div>
-        <div class="sb-section" data-roles="doctor,resident">Services</div>
-        <div class="sb-item" data-page="services" data-roles="doctor,resident" onclick="nav('services')"><span class="sb-item-ico">🛎️</span><span class="sb-item-txt">Services</span></div>
+        <div class="sb-section" data-roles="resident">Services</div>
+        <div class="sb-item" data-page="services" data-roles="resident" onclick="nav('services')"><span class="sb-item-ico">🛎️</span><span class="sb-item-txt">Services</span></div>
         <div class="sb-item" data-page="insurance" data-roles="resident" onclick="nav('insurance')"><span class="sb-item-ico">🛡️</span><span class="sb-item-txt">Insurance + ABHA</span></div>
         <div class="sb-section" data-roles="doctor">System</div>
         <div class="sb-item" data-page="audit" data-roles="doctor" onclick="nav('audit')"><span class="sb-item-ico">🔐</span><span class="sb-item-txt">Audit Log</span></div>
@@ -1317,7 +1433,7 @@ let ALERTS = [
 ];
 
 let auditLog = [];
-let selVitals = 'R001', selEmar = 'R001', selLabs = 'R001', selTl = 'R001', resFilter = 'All';
+let selVitals = 'R001', selEmar = 'R001', selLabs = 'R001', selTl = 'R001', selCare = 'R001', resFilter = 'All';
 let sidebarCollapsed = false;
 let currentRole = localStorage.getItem('ehmr-role') || '';
 const AI_STORAGE_KEY = 'ehmr-ai-groq-config';
@@ -1353,6 +1469,9 @@ function minuteTime(minutes) {
 function patientName(id) {
   return RESIDENTS.find(r => r.id === id)?.name || id;
 }
+function roleScopedResidents() {
+  return currentRole === 'resident' ? RESIDENTS.filter(r => r.id === 'R001') : RESIDENTS;
+}
 function statusBadge(status) {
   const normalized = String(status || 'Scheduled');
   const cls = normalized === 'Completed' ? 'badge-stable' : normalized === 'Missed' ? 'badge-critical' : 'badge-teal';
@@ -1378,22 +1497,32 @@ function slotAvailability(date, doctorName) {
   return {date, doctors:DOCTORS, availability:[{...doctor, slots}]};
 }
 async function fetchAppointments() {
+  const local = JSON.parse(localStorage.getItem('ehmr-appointments') || 'null') || localAppointmentSeed();
+  appointmentsData = local;
   try {
     const res = await fetch('https://ehmr-ai-server-production.up.railway.app/appointments');
     if (!res.ok) throw new Error('appointments unavailable');
-    appointmentsData = await res.json();
+    const remote = await res.json();
+    appointmentsData = Array.isArray(remote) && remote.length
+      ? [...local, ...remote.filter(a => !local.some(x => x.id === a.id))]
+      : local;
   } catch (e) {
-    appointmentsData = JSON.parse(localStorage.getItem('ehmr-appointments') || 'null') || localAppointmentSeed();
+    appointmentsData = local;
   }
+  localStorage.setItem('ehmr-appointments', JSON.stringify(appointmentsData));
   return appointmentsData;
 }
 async function fetchAvailability(date, doctorName) {
+  const fallback = slotAvailability(date, doctorName);
   try {
     const res = await fetch(`https://ehmr-ai-server-production.up.railway.app/availability?date=${encodeURIComponent(date)}&doctorName=${encodeURIComponent(doctorName || '')}`);
     if (!res.ok) throw new Error('availability unavailable');
-    return res.json();
+    const data = await res.json();
+    const doctor = (data.availability || [])[0];
+    const hasUsableSlots = Array.isArray(doctor?.slots) && doctor.slots.length;
+    return hasUsableSlots ? data : fallback;
   } catch (e) {
-    return slotAvailability(date, doctorName);
+    return fallback;
   }
 }
 function condBadge(c) {
@@ -1418,7 +1547,7 @@ function addAudit(action, res, detail) {
 }
 function toggleForm(id) { document.getElementById(id).classList.toggle('open'); }
 function resChipsHTML(selId, callback) {
-  return RESIDENTS.map(r =>
+  return roleScopedResidents().map(r =>
     `<div class="res-chip ${r.id === selId ? 'selected' : ''}" onclick="${callback}('${r.id}')">
       <div class="res-chip-av" style="background:${r.color}">${r.initials}</div>${r.name.split(' ')[0]}
     </div>`
@@ -1796,6 +1925,7 @@ function selectRole(role) {
 function resetRole() {
   localStorage.removeItem('ehmr-role');
   currentRole = '';
+  document.body.classList.remove('role-doctor', 'role-resident');
   document.getElementById('role-gate').classList.remove('hidden');
 }
 function roleAllows(el) {
@@ -1805,6 +1935,8 @@ function roleAllows(el) {
 function applyRoleAccess() {
   if (!currentRole) return;
   const isDoctor = currentRole === 'doctor';
+  document.body.classList.toggle('role-doctor', isDoctor);
+  document.body.classList.toggle('role-resident', !isDoctor);
   document.querySelector('.sb-uname').textContent = isDoctor ? 'Dr. Priya Nair' : 'Ramesh Iyer';
   document.querySelector('.sb-urole').textContent = isDoctor ? 'Senior Physician' : 'Resident / Patient';
   document.querySelector('.sb-av').textContent = isDoctor ? 'PN' : 'RI';
@@ -2159,7 +2291,7 @@ function loadCriticalReview() {
 
 // ===== VITALS =====
 function loadVitals(id) {
-  selVitals = id || 'R001';
+  selVitals = currentRole === 'resident' ? 'R001' : (id || 'R001');
   document.getElementById('vitals-chips').innerHTML = resChipsHTML(selVitals, 'loadVitals');
   const r = RESIDENTS.find(x => x.id === selVitals);
   const data = vitalsData[selVitals] || [];
@@ -2227,7 +2359,7 @@ function saveVitals() {
     spo2: parseFloat(document.getElementById('v-spo2').value) || null,
     temp: parseFloat(document.getElementById('v-temp').value) || null,
     glucose, weight: parseFloat(document.getElementById('v-weight').value) || null,
-    by: 'Dr. Priya Nair', notes: document.getElementById('v-notes').value
+    by: currentRole === 'resident' ? 'Patient / Family' : 'Dr. Priya Nair', notes: document.getElementById('v-notes').value
   };
   if (!vitalsData[selVitals]) vitalsData[selVitals] = [];
   vitalsData[selVitals].unshift(nv);
@@ -2432,22 +2564,51 @@ function loadTimeline(id) {
 
 // ===== CARE PLAN =====
 function loadCarePlan() {
-  const r = RESIDENTS.find(x => x.id === 'R001');
+  selCare = currentRole === 'resident' ? 'R001' : (selCare || 'R001');
+  const r = RESIDENTS.find(x => x.id === selCare);
+  const activeMeds = medsData[selCare] || [];
+  const prescriptions = prescriptionsData.filter(p => p.resId === selCare);
   document.getElementById('careplan-content').innerHTML = `
+    <div class="res-chips" data-roles="doctor">${resChipsHTML(selCare, 'loadCarePlanFor')}</div>
+    <div class="card" data-roles="doctor">
+      <div class="card-hdr"><div><div class="card-ttl">Write Doctor Prescription · ${r.name}</div><div class="page-sub">Medicines, dietary plan, activity plan, and follow-up are sent to the selected patient dashboard.</div></div><button class="btn btn-primary btn-sm" onclick="toggleForm('care-rx-form')">+ New Prescription</button></div>
+      <div class="form-section" id="care-rx-form">
+        <div class="form-grid">
+          <div class="form-group"><label>Medicines</label><textarea id="care-rx-meds" placeholder="Metformin 500mg | 1 tablet | Twice daily | 30 days"></textarea></div>
+          <div class="form-group"><label>Dietary Plan</label><textarea id="care-rx-diet" placeholder="Low sugar, low salt, high fibre meals. Avoid refined carbohydrates."></textarea></div>
+          <div class="form-group"><label>Activity / Therapy</label><textarea id="care-rx-activity" placeholder="15 minute walk after lunch. Physiotherapy Mon/Wed/Fri."></textarea></div>
+          <div class="form-group"><label>Follow-up / Instructions</label><textarea id="care-rx-followup" placeholder="Review glucose log in 2 weeks. Return earlier if dizziness or breathlessness."></textarea></div>
+        </div>
+        <div class="card" style="padding:14px;margin-top:12px">
+          <div class="card-hdr" style="margin-bottom:8px"><div><div class="card-ttl">Voice Prescription</div><div class="page-sub">Speak medicines, diet, activity, and follow-up. The transcript can fill the prescription form.</div></div><span class="badge badge-teal" id="care-voice-status">Ready</span></div>
+          <div class="form-group"><label>Voice Transcript</label><textarea id="care-rx-voice" placeholder="Example: Medicine Metformin 500mg one tablet twice daily for 30 days. Diet low sugar low salt. Activity walk 15 minutes daily. Follow up after 2 weeks."></textarea></div>
+          <div class="form-actions"><button class="btn btn-primary btn-sm" onclick="startCareVoice()">Record Voice</button><button class="btn btn-outline btn-sm" onclick="stopCareVoice()">Stop</button><button class="btn btn-outline btn-sm" onclick="applyCareVoiceTranscript()">Use Transcript</button></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveCarePrescription()">Send to Patient</button><button class="btn btn-outline" onclick="toggleForm('care-rx-form')">Cancel</button></div>
+      </div>
+    </div>
     <div class="card">
-      <div class="card-ttl" style="margin-bottom:12px">🎯 Treatment Goals</div>
+      <div class="card-hdr"><div><div class="card-ttl">Doctor Prescription · ${r.name}</div><div class="page-sub">Attending doctor: ${r.doctor}</div></div><span class="badge badge-teal">Patient visible</span></div>
+      <div class="tbl-wrap"><table><thead><tr><th>Medicine</th><th>Dose</th><th>Frequency</th><th>Duration</th></tr></thead><tbody>${activeMeds.map(m=>`<tr><td>${m.name}</td><td>${m.route || 'Oral'}</td><td>${m.freq}</td><td>${m.indication || 'As advised'}</td></tr>`).join('') || '<tr><td colspan="4">No active medicines</td></tr>'}</tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl" style="margin-bottom:12px">Treatment Goals</div>
       ${['Reduce HbA1c below 7.0%','Maintain BP below 130/80 mmHg','Continue physiotherapy for arthritis 3× per week','Monitor glucose twice daily','Improve dietary compliance — low-carb, low-salt'].map(g=>`
         <div class="goal-item"><div class="goal-check">✓</div><span style="font-size:13px;color:var(--g700)">${g}</span></div>`).join('')}
     </div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-ttl" style="margin-bottom:10px">🥗 Dietary Orders</div>
+        <div class="card-ttl" style="margin-bottom:10px">Dietary Plan</div>
         <div style="font-size:13px;line-height:1.8;color:var(--g700)">Low-carbohydrate diabetic diet. Avoid refined sugar and white rice. 1.5L fluid intake daily. High-fibre breakfast. Low-salt meals for BP management.</div>
       </div>
       <div class="card">
-        <div class="card-ttl" style="margin-bottom:10px">🏃 Activity Orders</div>
+        <div class="card-ttl" style="margin-bottom:10px">Activity / Therapy Plan</div>
         <div style="font-size:13px;line-height:1.8;color:var(--g700)">Physiotherapy 3× per week — Mon, Wed, Fri. Daily 15-min walk post-lunch. Range-of-motion exercises for knees. No high-impact activity.</div>
       </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-ttl">Recent Prescriptions Sent by Doctor</div><span class="badge badge-gray">${prescriptions.length} record${prescriptions.length===1?'':'s'}</span></div>
+      ${prescriptions.map(p=>`<div class="list-item"><strong>${p.date} · ${p.doctor}</strong><span>${(p.meds || []).map(m=>`${m.name || m.drug} ${m.dose || ''} ${m.frequency || ''}`).join('; ') || 'Care plan update'}${p.rx?.diet ? '<br><b>Diet:</b> ' + p.rx.diet : ''}${p.rx?.activity ? '<br><b>Activity:</b> ' + p.rx.activity : ''}${p.rx?.followUp ? '<br><b>Follow-up:</b> ' + p.rx.followUp : ''}</span></div>`).join('') || '<div class="empty-state"><span class="empty-ico">RX</span><div class="empty-txt">No doctor prescriptions sent yet</div></div>'}
     </div>
     <div class="card">
       <div class="card-ttl" style="margin-bottom:12px">🏥 Diagnoses & Allergies</div>
@@ -2458,9 +2619,105 @@ function loadCarePlan() {
     </div>
     <div class="card" style="background:linear-gradient(135deg,#FFFFFF,#EAF8F5);border-color:var(--border-accent)">
       <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:4px">NEXT REVIEW</div>
-      <div style="font-size:22px;font-weight:900">📅 15 April 2026</div>
-      <div style="font-size:13px;color:var(--text-sub);margin-top:4px">Attending: Dr. Priya Nair · Room 204-A</div>
+      <div style="font-size:22px;font-weight:900">Next doctor review</div>
+      <div style="font-size:13px;color:var(--text-sub);margin-top:4px">Attending: ${r.doctor} · Room ${r.room}</div>
     </div>`;
+  applyRoleAccess();
+}
+function loadCarePlanFor(id) {
+  selCare = currentRole === 'resident' ? 'R001' : id;
+  loadCarePlan();
+}
+function parseCareMedLine(line) {
+  const parts = line.split('|').map(x => x.trim());
+  return {name:parts[0] || line.trim(), dose:parts[1] || '', frequency:parts[2] || '', duration:parts[3] || ''};
+}
+let careVoiceRecognition = null;
+function setCareVoiceStatus(text) {
+  const el = document.getElementById('care-voice-status');
+  if (el) el.textContent = text;
+}
+function startCareVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const transcript = document.getElementById('care-rx-voice');
+  if (!transcript) return;
+  if (!SpeechRecognition) {
+    transcript.focus();
+    setCareVoiceStatus('Type fallback');
+    toast('Voice recognition is not available in this browser. Type transcript here.', 'warning');
+    return;
+  }
+  careVoiceRecognition = new SpeechRecognition();
+  careVoiceRecognition.continuous = true;
+  careVoiceRecognition.interimResults = true;
+  careVoiceRecognition.lang = 'en-IN';
+  let finalText = transcript.value ? transcript.value + ' ' : '';
+  careVoiceRecognition.onresult = event => {
+    let interim = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const phrase = event.results[i][0].transcript;
+      if (event.results[i].isFinal) finalText += phrase + ' ';
+      else interim += phrase;
+    }
+    transcript.value = (finalText + interim).trim();
+  };
+  careVoiceRecognition.onerror = () => {
+    setCareVoiceStatus('Type fallback');
+    toast('Voice capture stopped. You can edit the transcript manually.', 'warning');
+  };
+  careVoiceRecognition.onend = () => setCareVoiceStatus('Stopped');
+  careVoiceRecognition.start();
+  setCareVoiceStatus('Recording');
+  toast('Recording doctor prescription');
+}
+function stopCareVoice() {
+  if (careVoiceRecognition) careVoiceRecognition.stop();
+  setCareVoiceStatus('Stopped');
+}
+function extractSection(text, labels, stopLabels) {
+  const allStops = stopLabels.join('|');
+  for (const label of labels) {
+    const re = new RegExp(`${label}\\s*[:\\-]?\\s*([\\s\\S]*?)(?=\\b(?:${allStops})\\b\\s*[:\\-]?|$)`, 'i');
+    const match = text.match(re);
+    if (match && match[1].trim()) return match[1].trim().replace(/[.;]\s*$/, '');
+  }
+  return '';
+}
+function applyCareVoiceTranscript() {
+  const text = (document.getElementById('care-rx-voice')?.value || '').trim();
+  if (!text) { toast('Record or type a transcript first', 'error'); return; }
+  const stops = ['medicine','medicines','medication','diet','dietary','activity','therapy','exercise','follow up','follow-up','instructions'];
+  const meds = extractSection(text, ['medicine','medicines','medication'], stops) || text.split(/diet|dietary|activity|therapy|exercise|follow up|follow-up|instructions/i)[0].trim();
+  const diet = extractSection(text, ['diet','dietary'], stops);
+  const activity = extractSection(text, ['activity','therapy','exercise'], stops);
+  const follow = extractSection(text, ['follow up','follow-up','instructions'], stops);
+  if (meds) document.getElementById('care-rx-meds').value = meds.split(/\band\b|,|;/i).map(x => x.trim()).filter(Boolean).join('\n');
+  if (diet) document.getElementById('care-rx-diet').value = diet;
+  if (activity) document.getElementById('care-rx-activity').value = activity;
+  if (follow) document.getElementById('care-rx-followup').value = follow;
+  setCareVoiceStatus('Applied');
+  toast('Voice transcript added to prescription');
+}
+function saveCarePrescription() {
+  const resId = selCare || 'R001';
+  const meds = (document.getElementById('care-rx-meds').value || '').split('\n').map(x => x.trim()).filter(Boolean).map(parseCareMedLine);
+  const diet = document.getElementById('care-rx-diet').value.trim();
+  const activity = document.getElementById('care-rx-activity').value.trim();
+  const followUp = document.getElementById('care-rx-followup').value.trim();
+  if (!meds.length && !diet && !activity && !followUp) { toast('Add medicines or plan instructions first', 'error'); return; }
+  const rx = {chiefComplaint:'Doctor care plan prescription',diagnosis:'Care plan update',medications:meds,diet,activity,followUp};
+  prescriptionsData.unshift({id:'RX-'+Date.now(),resId,date:todayISO(),doctor:'Dr. Priya Nair',meds,rx});
+  if (!medsData[resId]) medsData[resId] = [];
+  meds.forEach(m => {
+    if (!m.name) return;
+    medsData[resId].unshift({id:'M'+Date.now()+Math.floor(Math.random()*1000),name:m.name,route:'Oral',freq:m.frequency || m.dose || 'As advised',indication:m.duration || 'Doctor prescription',by:'Dr. Priya Nair',times:[{id:'E'+Date.now()+Math.floor(Math.random()*1000),t:'08:00',status:'pending'}]});
+  });
+  if (!notesData[resId]) notesData[resId] = [];
+  notesData[resId].unshift({shift:'Doctor',date:todayISO(),author:'Dr. Priya Nair',role:'Doctor',note:'Prescription sent to patient: ' + rxText(resId, rx),tasks:[diet, activity, followUp].filter(Boolean),t:new Date().toISOString(),type:'Prescription'});
+  saveStore('ehmr_prescriptions', prescriptionsData);
+  addAudit('CREATE','care_prescription',`${patientName(resId)} prescription sent`);
+  loadCarePlan();
+  toast('Prescription sent to patient dashboard');
 }
 
 // ===== APPOINTMENTS =====
@@ -2607,13 +2864,15 @@ async function refreshSlots() {
   if (!date || !doctorName) return;
   await fetchAppointments();
   const data = await fetchAvailability(date, doctorName);
-  const doctor = (data.availability || [])[0];
+  let doctor = (data.availability || [])[0];
+  if (!doctor?.slots?.length) doctor = slotAvailability(date, doctorName).availability[0];
   const slotEl = document.getElementById('appt-slots');
   const available = (doctor?.slots || []).filter(s => s.available).length;
+  const firstOpen = (doctor?.slots || []).find(s => s.available);
   document.getElementById('slot-summary').textContent = `${available} available`;
-  selectedAppointmentSlot = '';
+  selectedAppointmentSlot = firstOpen?.time || '';
   slotEl.innerHTML = (doctor?.slots || []).map(s => `
-    <button class="slot-btn" ${s.available ? '' : 'disabled'} onclick="selectAppointmentSlot('${s.time}', this)" title="${s.break ? 'Doctor break' : s.booked ? 'Already booked' : 'Available'}">
+    <button class="slot-btn ${s.time === selectedAppointmentSlot ? 'selected' : ''}" ${s.available ? '' : 'disabled'} onclick="selectAppointmentSlot('${s.time}', this)" title="${s.break ? 'Doctor break' : s.booked ? 'Already booked' : 'Available'}">
       ${displayTime(s.time)}
     </button>`).join('') || `<div class="empty-state" style="grid-column:1/-1"><span class="empty-ico">📅</span><div class="empty-txt">No slots for this doctor</div></div>`;
 }
@@ -2658,6 +2917,7 @@ async function saveAppointment() {
     if (!res.ok) throw new Error((await res.json()).error || 'Slot unavailable');
     const created = await res.json();
     appointmentsData.push(created);
+    localStorage.setItem('ehmr-appointments', JSON.stringify(appointmentsData));
   } catch (e) {
     if (appointmentsData.some(a => a.doctorName === payload.doctorName && a.date === payload.date && a.time === payload.time && a.status === 'Scheduled')) {
       toast('That slot was just booked. Choose another time.', 'error');
@@ -2670,7 +2930,9 @@ async function saveAppointment() {
   }
   addAudit('CREATE', 'appointments', `${patientName(payload.patientId)} with ${payload.doctorName}`);
   closeAppointmentModal();
-  loadAppts();
+  if (_currentPage === 'book') loadBookSchedule();
+  else if (_currentPage === 'appointments') loadAppts();
+  else loadDash();
   showAppointmentConfirmation(appointmentsData[appointmentsData.length - 1] || payload);
   toast('Appointment booked successfully');
 }
@@ -2953,7 +3215,7 @@ function reminderQueueHTML() {
 }
 function servicesTodayHTML() {
   const rows = serviceBookings.filter(s => s.date === todayISO());
-  return `<div class="card"><div class="card-hdr"><div class="card-ttl">Services Today</div><button class="btn btn-outline btn-sm" onclick="nav('services')">Open</button></div>${rows.map(s => `<div class="queue-row"><div>${s.time}</div><div><strong>${s.type}</strong><div style="font-size:11px;color:var(--g500)">${patientName(s.resId)} · ${s.status}</div></div><button class="btn btn-outline btn-sm" onclick="completeService('${s.id}')">Mark Complete</button></div>`).join('') || '<div class="empty-state"><span class="empty-ico">🛎️</span><div class="empty-txt">No services booked today</div></div>'}</div>`;
+  return `<div class="card"><div class="card-hdr"><div class="card-ttl">Services Today</div><button class="btn btn-outline btn-sm" onclick="nav('ledger')">Ledger</button></div>${rows.map(s => `<div class="queue-row"><div>${s.time}</div><div><strong>${s.type}</strong><div style="font-size:11px;color:var(--g500)">${patientName(s.resId)} · ${s.status}</div></div><button class="btn btn-outline btn-sm" onclick="completeService('${s.id}')">Mark Accessed</button></div>`).join('') || '<div class="empty-state"><span class="empty-ico">🛎️</span><div class="empty-txt">No services booked today</div></div>'}</div>`;
 }
 function patientNextStepsHTML() {
   const assessment = healthAssessment('R001');
@@ -2978,6 +3240,8 @@ function patientNextStepsHTML() {
     <div class="info-row"><div class="info-lbl">Next Dose</div><div class="info-val">${due[0] ? `${due[0].name} at ${due[0].time}` : 'All doses completed for today'}</div></div>
     <div class="form-actions" style="margin-top:12px">
       <button class="btn btn-primary btn-sm" onclick="openAppointmentModal('R001','${assessment.urgency}','${assessment.visitWindow.replace(/'/g, "\\'")}')">Book Doctor Visit</button>
+      <button class="btn btn-outline btn-sm" onclick="nav('vitals');setTimeout(()=>toggleForm('vform'),80)">Add Vitals</button>
+      <button class="btn btn-outline btn-sm" onclick="nav('labs');setTimeout(()=>toggleForm('lab-ledger-form'),80)">Add Lab Report</button>
       <button class="btn btn-outline btn-sm" onclick="nav('insurance')">Open ABHA</button>
     </div>
   </div>`;
@@ -3021,10 +3285,20 @@ function quickAssignSchedule(day, shift) {
 function loadLedgerResources() {
   const totals = RESIDENTS.map(r => ({r,total:healthLedger.filter(x=>x.resId===r.id && x.date.slice(0,7)===todayISO().slice(0,7)).reduce((a,b)=>a+Number(b.cost||0),0)}));
   const facility = totals.reduce((a,b)=>a+b.total,0);
+  const serviceRows = serviceBookings.map(s => ({...s, accessed:['Confirmed','Completed'].includes(s.status)}));
+  const medicineRows = [
+    ...Object.entries(medsData).flatMap(([resId, meds]) => meds.map(m => ({date:todayISO(),resId,type:'Active Rx',medicine:m.name,qty:m.freq || 'As advised',status:'On chart'}))),
+    ...medicationOrders.map(o => ({date:o.date,resId:o.resId,type:'Medicine Order',medicine:o.med,qty:o.qty,status:o.status})),
+    ...prescriptionsData.flatMap(p => (p.meds || []).map(m => ({date:p.date,resId:p.resId,type:'Doctor Prescription',medicine:m.name || m.drug,qty:[m.dose,m.frequency,m.duration].filter(Boolean).join(' '),status:'Sent to patient'})))
+  ].slice(0, 30);
   document.getElementById('ledger-content').innerHTML = `<div class="grid-3" style="margin-bottom:14px"><div class="stat-card"><span class="stat-ico">₹</span><div class="stat-val" style="color:var(--teal-d)">${facility}</div><div class="stat-lbl">Monthly Facility Total</div></div><div class="stat-card"><span class="stat-ico">🛏️</span><div class="stat-val" style="color:var(--green)">${resourceState.beds.filter(b=>b.status==='Occupied').length}/6</div><div class="stat-lbl">Bed Occupancy</div></div><div class="stat-card"><span class="stat-ico">🧰</span><div class="stat-val" style="color:var(--sky)">${resourceState.equipment.filter(e=>e.status==='Available').length}</div><div class="stat-lbl">Equipment Available</div></div></div>
   <div class="grid-2"><div class="card"><div class="card-hdr"><div class="card-ttl">Health Ledger</div></div><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Resident</th><th>Type</th><th>Item</th><th>Cost</th></tr></thead><tbody>${healthLedger.map(x=>`<tr><td>${x.date}</td><td>${patientName(x.resId)}</td><td>${x.type}</td><td>${x.item}</td><td>₹${x.cost}</td></tr>`).join('')}</tbody></table></div></div>
   <div><div class="card"><div class="card-hdr"><div class="card-ttl">Monthly Totals</div></div>${totals.map(x=>`<div class="chart-row"><div class="chart-lbl">${x.r.name.split(' ')[0]}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(x.total/3000*100,100)}%;background:var(--teal)"></div></div><div class="chart-val">₹${x.total}</div></div>`).join('')}</div>
-  <div class="card"><div class="card-hdr"><div class="card-ttl">Resources</div></div>${resourceState.beds.map(b=>`<div class="info-row"><div class="info-lbl">${b.label}</div><div class="info-val">${b.status}${b.resId?' · '+patientName(b.resId):''}</div></div>`).join('')}${resourceState.equipment.map(e=>`<div class="info-row"><div class="info-lbl">${e.name}</div><div class="info-val">${e.status}</div></div>`).join('')}</div></div></div>`;
+  <div class="card"><div class="card-hdr"><div class="card-ttl">Resources</div></div>${resourceState.beds.map(b=>`<div class="info-row"><div class="info-lbl">${b.label}</div><div class="info-val">${b.status}${b.resId?' · '+patientName(b.resId):''}</div></div>`).join('')}${resourceState.equipment.map(e=>`<div class="info-row"><div class="info-lbl">${e.name}</div><div class="info-val">${e.status}</div></div>`).join('')}</div></div></div>
+  <div class="grid-2" style="margin-top:14px">
+    <div class="card"><div class="card-hdr"><div><div class="card-ttl">Patient Service Access</div><div class="page-sub">Shows services patients have requested or accessed</div></div></div><div class="tbl-wrap"><table><thead><tr><th>Ref</th><th>Resident</th><th>Service</th><th>Date</th><th>Access Mark</th><th>Status</th></tr></thead><tbody>${serviceRows.map(s=>`<tr><td>${s.id}</td><td>${patientName(s.resId)}</td><td>${s.type}</td><td>${s.date} ${s.time}</td><td><span class="badge ${s.accessed?'badge-stable':'badge-monitor'}">${s.accessed?'Accessed':'Requested'}</span></td><td>${statusBadge(s.status)}</td></tr>`).join('') || '<tr><td colspan="6">No service access records</td></tr>'}</tbody></table></div></div>
+    <div class="card"><div class="card-hdr"><div><div class="card-ttl">Medicine Ledger</div><div class="page-sub">Active medicines, doctor prescriptions, and delivery orders</div></div></div><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Resident</th><th>Type</th><th>Medicine</th><th>Qty / Dose</th><th>Status</th></tr></thead><tbody>${medicineRows.map(m=>`<tr><td>${m.date}</td><td>${patientName(m.resId)}</td><td>${m.type}</td><td>${m.medicine}</td><td>${m.qty || 'As advised'}</td><td><span class="badge badge-teal">${m.status}</span></td></tr>`).join('') || '<tr><td colspan="6">No medicine records</td></tr>'}</tbody></table></div></div>
+  </div>`;
   addAudit('VIEW','ledger_resources','Ledger and resource panel');
 }
 
@@ -3169,23 +3443,55 @@ function classifyLab(value, low, high) {
   const severity = dev > 40 ? 'Severe' : dev > 20 ? 'Moderate' : dev > 10 ? 'Mild' : 'Normal';
   return {status,severity,dev:Math.round(dev)};
 }
+function workflowClass(status) {
+  return 'workflow-' + String(status || 'Published').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+function setWorkflowSelectClass(select) {
+  select.className = `workflow-select ${workflowClass(select.value)}`;
+}
 loadLabs = function(id) {
-  selLabs = id || 'R001';
+  selLabs = currentRole === 'resident' ? 'R001' : (id || 'R001');
   document.getElementById('labs-chips').innerHTML = resChipsHTML(selLabs, 'loadLabs');
-  const visible = currentRole === 'resident' ? (labsData[selLabs] || []).filter(l=>(l.workflow || 'Published') === 'Published') : (labsData[selLabs] || []);
-  document.getElementById('labs-content').innerHTML = `<div class="card"><div class="card-hdr"><div><div class="card-ttl">Lab Ledger · ${patientName(selLabs)}</div><div class="page-sub">Draft → Reviewed → Published workflow with anomaly flagging</div></div><button class="btn btn-primary btn-sm" onclick="toggleForm('lab-ledger-form')" data-roles="doctor">Submit New Lab Report</button></div>
-    <div class="form-section" id="lab-ledger-form"><div class="form-grid"><div class="form-group"><label>Resident</label><select id="ll-res">${RESIDENTS.slice(0,4).map(r=>`<option value="${r.id}" ${r.id===selLabs?'selected':''}>${r.name}</option>`).join('')}</select></div><div class="form-group"><label>Test Name</label><input id="ll-test" placeholder="Creatinine"/></div><div class="form-group"><label>Test Date</label><input id="ll-date" type="date" value="${todayISO()}"/></div><div class="form-group"><label>Lab Name</label><input id="ll-lab" placeholder="Apollo Diagnostics"/></div><div class="form-group"><label>Result Value</label><input id="ll-result" type="number" step="0.01"/></div><div class="form-group"><label>Unit</label><input id="ll-unit" placeholder="mg/dL"/></div><div class="form-group"><label>Reference Low</label><input id="ll-low" type="number" step="0.01"/></div><div class="form-group"><label>Reference High</label><input id="ll-high" type="number" step="0.01"/></div></div><div class="form-group" style="margin-top:10px"><label>Upload Note</label><input id="ll-note" placeholder="Report reference"/></div><div class="form-actions"><button class="btn btn-primary" onclick="saveLabLedger()">Submit</button><button class="btn btn-outline" onclick="toggleForm('lab-ledger-form')">Cancel</button></div></div>
-    <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Resident</th><th>Test</th><th>Result</th><th>Ref Range</th><th>Status</th><th>Trend</th><th>Workflow</th><th>Actions</th></tr></thead><tbody>${visible.map(l => { const last = (labsData[selLabs] || []).filter(x=>x.test===l.test).map(x=>Number(x.result)); return `<tr><td>${l.date}</td><td>${patientName(selLabs)}</td><td>${l.test}</td><td><strong>${l.result} ${l.unit}</strong></td><td>${l.ref}</td><td>${labBadge(l.status)} ${l.severity?`<span class="badge badge-gray">${l.severity}</span>`:''}</td><td>${last[0] > last[1] ? '↑' : last[0] < last[1] ? '↓' : '→'} ${sparkline(last.reverse())}</td><td>${currentRole==='doctor'?`<select onchange="changeLabWorkflow('${l.id}',this.value)">${['Draft','Reviewed','Published'].map(s=>`<option ${((l.workflow || 'Published')===s)?'selected':''}>${s}</option>`).join('')}</select>`:(l.workflow || 'Published')}</td><td>${l.status !== 'normal'?`<button class="btn btn-outline btn-sm" onclick="explainLab('${l.id}')">🤖 Explain</button>`:''}</td></tr>`; }).join('') || '<tr><td colspan="9">No lab reports</td></tr>'}</tbody></table></div></div>`;
+  const visible = labsData[selLabs] || [];
+  document.getElementById('labs-content').innerHTML = `<div class="card"><div class="card-hdr"><div><div class="card-ttl">Lab Ledger · ${patientName(selLabs)}</div><div class="page-sub">${currentRole === 'resident' ? 'Upload reports for doctor review' : 'Draft → Reviewed → Published workflow with anomaly flagging'}</div></div><button class="btn btn-primary btn-sm" onclick="toggleForm('lab-ledger-form')" data-roles="doctor,resident">Submit New Lab Report</button></div>
+    <div class="form-section" id="lab-ledger-form"><div class="form-grid"><div class="form-group"><label>Resident</label><select id="ll-res">${roleScopedResidents().map(r=>`<option value="${r.id}" ${r.id===selLabs?'selected':''}>${r.name}</option>`).join('')}</select></div><div class="form-group"><label>Test Name</label><input id="ll-test" placeholder="Creatinine"/></div><div class="form-group"><label>Test Date</label><input id="ll-date" type="date" value="${todayISO()}"/></div><div class="form-group"><label>Lab Name</label><input id="ll-lab" placeholder="Apollo Diagnostics"/></div><div class="form-group"><label>Result Value</label><input id="ll-result" type="number" step="0.01"/></div><div class="form-group"><label>Unit</label><input id="ll-unit" placeholder="mg/dL"/></div><div class="form-group"><label>Reference Low</label><input id="ll-low" type="number" step="0.01"/></div><div class="form-group"><label>Reference High</label><input id="ll-high" type="number" step="0.01"/></div><div class="form-group"><label>Photo of Lab Report</label><input id="ll-photo" type="file" accept="image/*" capture="environment" onchange="previewLabPhoto(this)"/></div></div><div id="ll-photo-preview" style="display:none;margin-top:10px"></div><div class="form-group" style="margin-top:10px"><label>Upload Note</label><input id="ll-note" placeholder="Report reference"/></div><div class="form-actions"><button class="btn btn-primary" onclick="saveLabLedger()">Submit</button><button class="btn btn-outline" onclick="toggleForm('lab-ledger-form')">Cancel</button></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Resident</th><th>Test</th><th>Result</th><th>Ref Range</th><th>Status</th><th>Trend</th><th>Workflow</th><th>Actions</th></tr></thead><tbody>${visible.map(l => { const last = (labsData[selLabs] || []).filter(x=>x.test===l.test).map(x=>Number(x.result)); const wf = l.workflow || 'Published'; return `<tr><td>${l.date}</td><td>${patientName(selLabs)}</td><td>${l.test}</td><td><strong>${l.result} ${l.unit}</strong>${l.photo?'<div style="margin-top:5px"><img src="'+l.photo+'" alt="Lab report photo" style="width:54px;height:54px;object-fit:cover;border-radius:8px;border:1px solid var(--border)"/></div>':''}</td><td>${l.ref}</td><td>${labBadge(l.status)} ${l.severity?`<span class="badge badge-gray">${l.severity}</span>`:''}</td><td>${last[0] > last[1] ? '↑' : last[0] < last[1] ? '↓' : '→'} ${sparkline(last.reverse())}</td><td>${currentRole==='doctor'?`<select class="workflow-select ${workflowClass(wf)}" onchange="setWorkflowSelectClass(this);changeLabWorkflow('${l.id}',this.value)">${['Patient Submitted','Draft','Reviewed','Published'].map(s=>`<option ${((l.workflow || 'Published')===s)?'selected':''}>${s}</option>`).join('')}</select>`:`<span class="workflow-select ${workflowClass(wf)}" style="display:inline-flex">${wf}</span>`}</td><td>${l.photo?`<button class="btn btn-outline btn-sm" onclick="openLabPhoto('${l.id}')">View Photo</button>`:''}${l.status !== 'normal'?`<button class="btn btn-outline btn-sm" onclick="explainLab('${l.id}')">🤖 Explain</button>`:''}</td></tr>`; }).join('') || '<tr><td colspan="9">No lab reports</td></tr>'}</tbody></table></div></div>`;
   applyRoleAccess(); addAudit('VIEW','labs',patientName(selLabs));
 };
-function saveLabLedger() {
-  const resId = document.getElementById('ll-res').value, low = parseFloat(document.getElementById('ll-low').value), high = parseFloat(document.getElementById('ll-high').value), result = document.getElementById('ll-result').value;
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) { resolve(''); return; }
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+async function previewLabPhoto(input) {
+  const file = input.files && input.files[0];
+  const box = document.getElementById('ll-photo-preview');
+  if (!box) return;
+  if (!file) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const src = await readFileAsDataURL(file);
+  box.style.display = '';
+  box.innerHTML = `<div class="alert-row alert-info" style="margin-bottom:0"><div class="alert-ico">IMG</div><div class="alert-body"><div class="alert-title">${file.name}</div><div class="alert-msg">Photo attached to this lab report.</div></div><img src="${src}" alt="Lab report preview" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--border)"/></div>`;
+}
+async function saveLabLedger() {
+  const resId = currentRole === 'resident' ? 'R001' : document.getElementById('ll-res').value, low = parseFloat(document.getElementById('ll-low').value), high = parseFloat(document.getElementById('ll-high').value), result = document.getElementById('ll-result').value;
   if (!document.getElementById('ll-test').value || !result) { toast('Test and result are required','error'); return; }
   const cls = classifyLab(result, low, high);
-  const entry = {id:'L'+Date.now(),test:document.getElementById('ll-test').value,result,unit:document.getElementById('ll-unit').value,ref:`${low}-${high}`,status:cls.status,severity:cls.severity,deviation:cls.dev,date:document.getElementById('ll-date').value,lab:document.getElementById('ll-lab').value,note:document.getElementById('ll-note').value,workflow:'Draft',by:'Dr. Priya Nair'};
-  setTimeout(()=>{ if (!labsData[resId]) labsData[resId]=[]; labsData[resId].unshift(entry); addAudit('CREATE','lab_ledger',`${entry.test} for ${patientName(resId)} (${entry.status})`); selLabs=resId; loadLabs(resId); toast('Lab report submitted as Draft'); },400);
+  const photoInput = document.getElementById('ll-photo');
+  const photoFile = photoInput?.files?.[0];
+  const photo = await readFileAsDataURL(photoFile);
+  const entry = {id:'L'+Date.now(),test:document.getElementById('ll-test').value,result,unit:document.getElementById('ll-unit').value,ref:`${low}-${high}`,status:cls.status,severity:cls.severity,deviation:cls.dev,date:document.getElementById('ll-date').value,lab:document.getElementById('ll-lab').value,note:document.getElementById('ll-note').value,photo,photoName:photoFile?.name || '',workflow:currentRole === 'resident' ? 'Patient Submitted' : 'Draft',by:currentRole === 'resident' ? 'Patient / Family' : 'Dr. Priya Nair'};
+  setTimeout(()=>{ if (!labsData[resId]) labsData[resId]=[]; labsData[resId].unshift(entry); addAudit('CREATE','lab_ledger',`${entry.test} for ${patientName(resId)} (${entry.status})`); selLabs=resId; loadLabs(resId); toast(currentRole === 'resident' ? 'Lab report uploaded for doctor review' : 'Lab report submitted as Draft'); },400);
 }
 function changeLabWorkflow(id,status) { const l = (labsData[selLabs] || []).find(x=>x.id===id); if (l) l.workflow=status; addAudit('UPDATE','lab_workflow',`${id} moved to ${status}`); toast('Lab workflow updated'); }
+function openLabPhoto(id) {
+  const lab = (labsData[selLabs] || []).find(x=>x.id===id);
+  if (!lab?.photo) { toast('No photo attached', 'warning'); return; }
+  openDrawer('Lab Report Photo', `${lab.test} · ${lab.date}`, `<img src="${lab.photo}" alt="Lab report photo" style="width:100%;border-radius:12px;border:1px solid var(--border)"/><div class="page-sub" style="margin-top:10px">${lab.photoName || 'Uploaded lab report image'}</div>`);
+}
 async function explainLab(id) {
   const lab = (labsData[selLabs] || []).find(x=>x.id===id);
   const result = await featureAI('lab_anomaly_explanation', {lab,resident:aiPatientPayload(selLabs),medications:medsData[selLabs]}, () => ({insight:`${lab.test} is ${lab.status} by ${lab.deviation || 0}% from reference. Review symptoms, hydration, medication timing, and repeat/confirm as clinically appropriate.`}));
@@ -3232,7 +3538,7 @@ function saveTypedPrescription(resId) {
 }
 function rxText(resId, rx) {
   const meds = rx.medications || [];
-  return `Prescription for ${patientName(resId)}\nDoctor: Dr. Priya Nair\nDate: ${displayDate(todayISO())}\nMedications:\n${meds.map(m=>`- ${m.name || m.drug}: ${m.dose || ''} ${m.frequency || ''} ${m.duration || ''}`).join('\n')}\nFollow-up: ${rx.followUp || rx.instructions || 'As advised.'}`;
+  return `Prescription for ${patientName(resId)}\nDoctor: Dr. Priya Nair\nDate: ${displayDate(todayISO())}\nMedications:\n${meds.map(m=>`- ${m.name || m.drug}: ${m.dose || ''} ${m.frequency || ''} ${m.duration || ''}`).join('\n') || '- As advised'}${rx.diet ? '\nDietary plan: ' + rx.diet : ''}${rx.activity ? '\nActivity plan: ' + rx.activity : ''}\nFollow-up: ${rx.followUp || rx.instructions || 'As advised.'}`;
 }
 function savePrescription(resId, rx) {
   prescriptionsData.unshift({id:'RX-'+Date.now(),resId,date:todayISO(),doctor:'Dr. Priya Nair',meds:rx.medications || [],rx});
@@ -3254,7 +3560,7 @@ if (currentRole) {
   document.getElementById('role-gate').classList.add('hidden');
   applyRoleAccess();
 }
-loadDash();
+fetchAppointments().finally(loadDash);
 </script>
 </body>
 </html>
