@@ -901,8 +901,8 @@ thead tr{
             <div class="card ai-hero">
               <div class="card-hdr" style="position:relative;z-index:1">
                 <div>
-                  <div class="card-ttl">✨ AI Insight Engine · Ramesh Iyer</div>
-                  <div class="page-sub">Groq-powered risk interpretation from manual vitals and EHMR history</div>
+                  <div class="card-ttl" id="dash-ai-title">✨ AI Insight Engine · Ramesh Iyer</div>
+                  <div class="page-sub" id="dash-ai-sub">Groq-powered risk interpretation from manual vitals and EHMR history</div>
                 </div>
                 <span class="ai-risk medium" id="dash-ai-risk">MEDIUM RISK</span>
               </div>
@@ -924,7 +924,7 @@ thead tr{
               </div>
             </div>
             <div class="card">
-              <div class="card-hdr"><div class="card-ttl">7-Day Vitals Trend</div><span class="badge badge-teal">Manual records</span></div>
+              <div class="card-hdr"><div class="card-ttl" id="dash-trends-title">7-Day Vitals Trend</div><span class="badge badge-teal" id="dash-trends-badge">Manual records</span></div>
               <div id="dash-ai-trends"></div>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--g500)">
                 <span><b style="color:var(--teal)">■</b> SpO₂</span>
@@ -1903,6 +1903,17 @@ function loadDash() {
   document.getElementById('dash-greeting').textContent = currentRole === 'resident' ? 'My EHMR AI Health Dashboard' : 'EHMR AI – Smart Senior Health Dashboard';
   document.getElementById('dash-date').textContent =
     new Date().toLocaleDateString('en-IN', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const isPatient = currentRole === 'resident';
+  const heroTitle = document.getElementById('dash-ai-title');
+  const heroSub = document.getElementById('dash-ai-sub');
+  const trendTitle = document.getElementById('dash-trends-title');
+  const trendBadge = document.getElementById('dash-trends-badge');
+  if (heroTitle) heroTitle.textContent = isPatient ? '✨ My AI Health Summary · Ramesh Iyer' : '✨ Clinical AI Insight Engine · Ramesh Iyer';
+  if (heroSub) heroSub.textContent = isPatient
+    ? 'Simple explanation from my latest vitals, medicines, and care history'
+    : 'Groq-powered risk interpretation from manual vitals and EHMR history';
+  if (trendTitle) trendTitle.textContent = isPatient ? 'My 7-Day Vitals Trend' : '7-Day Vitals Trend';
+  if (trendBadge) trendBadge.textContent = isPatient ? 'My records' : 'Manual records';
   loadAIConfig();
   renderTrends('R001');
   renderAI(localAIInsight('R001'));
@@ -1916,7 +1927,31 @@ function loadDash() {
   });
   const primaryAssessment = healthAssessment('R001');
   const avgHealthScore = Math.round(RESIDENTS.reduce((sum, r) => sum + healthAssessment(r.id).score, 0) / RESIDENTS.length);
-  document.getElementById('dash-stats').innerHTML = `
+  const nextAppt = appointmentsData
+    .filter(a => a.patientId === 'R001' && appointmentStatus(a) === 'Scheduled')
+    .sort((a,b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))[0];
+  const readiness = coverageReadiness('R001');
+  document.getElementById('dash-stats').innerHTML = isPatient ? `
+    <div class="stat-card" onclick="nav('appointments')">
+      <span class="stat-ico">📅</span>
+      <div class="stat-val" style="color:var(--teal-d)">${nextAppt ? displayDate(nextAppt.date).split(' ').slice(0,2).join(' ') : 'None'}</div>
+      <div class="stat-lbl">Next Doctor Visit</div><div class="stat-sub">${nextAppt ? `${displayTime(nextAppt.time)} · ${nextAppt.doctorName}` : 'No appointment scheduled'}</div>
+    </div>
+    <div class="stat-card" onclick="nav('careplan')">
+      <span class="stat-ico">🧭</span>
+      <div class="stat-val" style="color:${primaryAssessment.score < 70 ? 'var(--coral)' : primaryAssessment.score < 85 ? 'var(--amber)' : 'var(--green)'}">${primaryAssessment.score}</div>
+      <div class="stat-lbl">My Health Score</div><div class="stat-sub">${primaryAssessment.visitWindow}</div>
+    </div>
+    <div class="stat-card" onclick="nav('residents')">
+      <span class="stat-ico">💊</span>
+      <div class="stat-val" style="color:var(--amber)">${given}/${total}</div>
+      <div class="stat-lbl">My Medicines</div><div class="stat-sub">Doses completed today</div>
+    </div>
+    <div class="stat-card" onclick="nav('insurance')">
+      <span class="stat-ico">🛡️</span>
+      <div class="stat-val" style="color:${readiness.score >= 80 ? 'var(--green)' : readiness.score >= 60 ? 'var(--amber)' : 'var(--coral)'}">${readiness.score}%</div>
+      <div class="stat-lbl">ABHA + Insurance</div><div class="stat-sub">Visit readiness file</div>
+    </div>` : `
     <div class="stat-card" onclick="nav('residents')">
       <span class="stat-ico">👥</span>
       <div class="stat-val" style="color:var(--teal-d)">${RESIDENTS.length}</div>
@@ -1932,10 +1967,10 @@ function loadDash() {
       <div class="stat-val" style="color:var(--amber)">${given}/${total}</div>
       <div class="stat-lbl">Meds Given</div><div class="stat-sub">Today · Ramesh Iyer</div>
     </div>
-    <div class="stat-card" onclick="nav('appointments')">
+    <div class="stat-card" onclick="nav('critical')">
       <span class="stat-ico">🧭</span>
-      <div class="stat-val" style="color:${primaryAssessment.score < 70 ? 'var(--coral)' : primaryAssessment.score < 85 ? 'var(--amber)' : 'var(--green)'}">${currentRole === 'resident' ? primaryAssessment.score : avgHealthScore}</div>
-      <div class="stat-lbl">${currentRole === 'resident' ? 'My Health Score' : 'Avg Health Score'}</div><div class="stat-sub">${primaryAssessment.visitWindow}</div>
+      <div class="stat-val" style="color:${avgHealthScore < 70 ? 'var(--coral)' : avgHealthScore < 85 ? 'var(--amber)' : 'var(--green)'}">${avgHealthScore}</div>
+      <div class="stat-lbl">Avg Health Score</div><div class="stat-sub">Across monitored residents</div>
     </div>`;
   document.getElementById('dash-alerts').innerHTML = ua.slice(0, 3).map(a => `
     <div class="alert-row alert-${a.sev==='critical'?'critical':a.sev==='warning'?'warning':'info'}">
@@ -2920,13 +2955,51 @@ function servicesTodayHTML() {
   const rows = serviceBookings.filter(s => s.date === todayISO());
   return `<div class="card"><div class="card-hdr"><div class="card-ttl">Services Today</div><button class="btn btn-outline btn-sm" onclick="nav('services')">Open</button></div>${rows.map(s => `<div class="queue-row"><div>${s.time}</div><div><strong>${s.type}</strong><div style="font-size:11px;color:var(--g500)">${patientName(s.resId)} · ${s.status}</div></div><button class="btn btn-outline btn-sm" onclick="completeService('${s.id}')">Mark Complete</button></div>`).join('') || '<div class="empty-state"><span class="empty-ico">🛎️</span><div class="empty-txt">No services booked today</div></div>'}</div>`;
 }
+function patientNextStepsHTML() {
+  const assessment = healthAssessment('R001');
+  const upcoming = appointmentsData
+    .filter(a => a.patientId === 'R001' && appointmentStatus(a) === 'Scheduled')
+    .sort((a,b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))[0];
+  const due = [];
+  (medsData.R001 || []).forEach(m => m.times
+    .filter(d => d.status !== 'given')
+    .forEach(d => due.push({time:d.t, name:m.name, status:d.status})));
+  due.sort((a,b) => timeMinutes(a.time) - timeMinutes(b.time));
+  return `<div class="card dash-extra">
+    <div class="card-hdr"><div class="card-ttl">My Next Steps</div><button class="btn btn-outline btn-sm" onclick="nav('careplan')">Care Plan</button></div>
+    <div class="alert-row ${assessment.visitNeeded ? 'alert-warning' : 'alert-success'}" style="margin-bottom:10px">
+      <div class="alert-ico">${assessment.visitNeeded ? '📅' : '✅'}</div>
+      <div class="alert-body">
+        <div class="alert-title">${assessment.visitNeeded ? 'Doctor review suggested' : 'Plan looks steady'}</div>
+        <div class="alert-msg">${assessment.visitWindow}</div>
+      </div>
+    </div>
+    <div class="info-row"><div class="info-lbl">Next Visit</div><div class="info-val">${upcoming ? `${displayDate(upcoming.date)} at ${displayTime(upcoming.time)} with ${upcoming.doctorName}` : 'No visit scheduled yet'}</div></div>
+    <div class="info-row"><div class="info-lbl">Next Dose</div><div class="info-val">${due[0] ? `${due[0].name} at ${due[0].time}` : 'All doses completed for today'}</div></div>
+    <div class="form-actions" style="margin-top:12px">
+      <button class="btn btn-primary btn-sm" onclick="openAppointmentModal('R001','${assessment.urgency}','${assessment.visitWindow.replace(/'/g, "\\'")}')">Book Doctor Visit</button>
+      <button class="btn btn-outline btn-sm" onclick="nav('insurance')">Open ABHA</button>
+    </div>
+  </div>`;
+}
+function patientServicesHTML() {
+  const rows = serviceBookings.filter(s => s.resId === 'R001').slice(0, 3);
+  return `<div class="card dash-extra"><div class="card-hdr"><div class="card-ttl">My Service Requests</div><button class="btn btn-outline btn-sm" onclick="nav('services')">Open</button></div>${rows.map(s => `<div class="queue-row"><div>${s.time}</div><div><strong>${s.type}</strong><div style="font-size:11px;color:var(--g500)">${s.date} · ${s.status}</div></div><span class="badge ${s.status==='Completed'?'badge-stable':s.status==='Pending'?'badge-monitor':'badge-teal'}">${s.status}</span></div>`).join('') || '<div class="empty-state"><span class="empty-ico">🛎️</span><div class="empty-txt">No service requests yet</div></div>'}</div>`;
+}
 const _loadDashBase = loadDash;
 loadDash = function() {
   _loadDashBase();
+  document.querySelectorAll('#page-dashboard .dash-extra').forEach(el => el.remove());
   const rightCol = document.querySelector('#page-dashboard .grid-2 > div:last-child');
-  if (rightCol) rightCol.insertAdjacentHTML('afterbegin', miniCalendarStrip() + servicesTodayHTML());
+  if (rightCol) {
+    if (currentRole === 'resident') rightCol.insertAdjacentHTML('afterbegin', patientNextStepsHTML());
+    else rightCol.insertAdjacentHTML('afterbegin', `<div class="dash-extra">${miniCalendarStrip()}</div>` + servicesTodayHTML().replace('<div class="card">', '<div class="card dash-extra">'));
+  }
   const leftCol = document.querySelector('#page-dashboard .grid-2 > div:first-child');
-  if (leftCol) leftCol.insertAdjacentHTML('beforeend', reminderQueueHTML());
+  if (leftCol) {
+    if (currentRole === 'resident') leftCol.insertAdjacentHTML('beforeend', patientServicesHTML());
+    else leftCol.insertAdjacentHTML('beforeend', reminderQueueHTML().replace('<div class="card">', '<div class="card dash-extra">'));
+  }
   startReminderEngine();
 };
 
