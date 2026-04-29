@@ -479,11 +479,25 @@ tbody tr:hover td{color:var(--text)}
 .timeline-compact{display:grid;gap:8px}
 
 /* ====== TOAST ====== */
-#toast{position:fixed;top:22px;right:22px;z-index:999999;display:grid;gap:8px;width:min(340px,calc(100vw - 44px))}
-.toast-item{background:var(--bg2);border:1px solid var(--border-accent);border-radius:14px;padding:13px 16px;
-  box-shadow:var(--shadow-md),var(--glow-accent);font-size:13px;color:var(--text);font-weight:500;
-  animation:toastIn .3s cubic-bezier(.4,0,.2,1) both;display:flex;align-items:center;gap:10px}
-@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+#toast{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;
+  padding:22px;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}
+#toast.show{opacity:1;visibility:visible}
+.toast-item{width:min(430px,calc(100vw - 44px));background:rgba(255,255,255,0.96);border:1px solid var(--border-accent);
+  border-radius:18px;padding:18px 20px;box-shadow:0 28px 80px rgba(20,34,54,0.22),var(--glow-accent);
+  font-size:14px;color:var(--text);font-weight:700;line-height:1.45;animation:toastIn .24s cubic-bezier(.4,0,.2,1) both;
+  display:flex;align-items:flex-start;gap:12px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.toast-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;background:var(--accent-dim);color:var(--accent);border:1px solid var(--border-accent);font-size:18px}
+.toast-copy{flex:1;min-width:0}
+.toast-title{font-family:var(--head);font-size:15px;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:3px}
+.toast-msg{font-size:13px;font-weight:600;color:var(--text-sub);overflow-wrap:anywhere}
+#toast.success .toast-item{border-color:rgba(0,232,122,0.24)}
+#toast.success .toast-icon{background:var(--green-dim);color:var(--green);border-color:rgba(0,232,122,0.24)}
+#toast.warning .toast-item{border-color:rgba(255,176,32,0.28);box-shadow:0 28px 80px rgba(20,34,54,0.22),0 14px 34px rgba(183,121,31,0.12)}
+#toast.warning .toast-icon{background:var(--amber-dim);color:var(--amber);border-color:rgba(255,176,32,0.28)}
+#toast.error .toast-item{border-color:rgba(255,61,92,0.28);box-shadow:0 28px 80px rgba(20,34,54,0.22),var(--glow-coral)}
+#toast.error .toast-icon{background:var(--coral-dim);color:var(--coral);border-color:rgba(255,61,92,0.28)}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 .toast-stack{position:fixed;right:18px;bottom:18px;z-index:99998;display:grid;gap:10px;width:min(360px,calc(100vw - 36px))}
 .persistent-toast{background:var(--amber-dim);border:1px solid rgba(255,176,32,0.25);border-radius:14px;padding:13px 16px;box-shadow:var(--shadow-md)}
 
@@ -1564,10 +1578,22 @@ function unacked() { return ALERTS.filter(a => !a.acked); }
 let toastTmr;
 function toast(msg, type = 'success') {
   const el = document.getElementById('toast');
-  el.innerHTML = msg;
-  el.className = 'show ' + (type || '');
+  const toastType = type || 'success';
+  const icon = toastType === 'error' ? '!' : toastType === 'warning' ? '!' : '✓';
+  const title = toastType === 'error' ? 'Action Required' : toastType === 'warning' ? 'Please Review' : 'Success';
+  el.innerHTML = `<div class="toast-item" role="alert" aria-live="assertive">
+    <div class="toast-icon">${icon}</div>
+    <div class="toast-copy">
+      <div class="toast-title">${title}</div>
+      <div class="toast-msg">${msg}</div>
+    </div>
+  </div>`;
+  el.className = 'show ' + toastType;
   clearTimeout(toastTmr);
-  toastTmr = setTimeout(() => el.classList.remove('show'), 2800);
+  toastTmr = setTimeout(() => {
+    el.className = toastType;
+    el.innerHTML = '';
+  }, 2800);
 }
 function addAudit(action, res, detail) {
   auditLog.unshift({t: new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}), name:'Dr. Priya Nair', role:'Doctor', action, resource:res, detail});
