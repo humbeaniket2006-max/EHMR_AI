@@ -467,6 +467,19 @@ tbody tr:hover td{color:var(--text)}
   display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px;border:1px solid var(--border-accent)}
 .queue-row{display:grid;grid-template-columns:68px 1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(24,44,70,0.08)}
 .queue-row:last-child{border-bottom:none}
+.copilot-brief{background:#FFFFFF;color:#111827;border-color:rgba(15,159,138,0.28);box-shadow:0 12px 34px rgba(20,34,54,0.10);padding:26px 30px;border-radius:16px}
+.copilot-brief:hover{border-color:rgba(15,159,138,0.38);box-shadow:0 18px 44px rgba(20,34,54,0.14)}
+.copilot-title{display:flex;align-items:center;gap:10px;font-family:var(--head);font-size:18px;font-weight:800;margin-bottom:26px;color:#111827}
+.copilot-icon{color:#0F9F8A;font-size:19px}
+.copilot-copy{max-width:800px;font-size:18px;line-height:1.58;font-weight:600;color:#111827}
+.copilot-copy strong{color:#000000;font-weight:900}
+.copilot-link{display:inline-flex;align-items:center;margin-top:22px;color:#087A6C;font-weight:800;font-size:15px;background:transparent;border:0;padding:0;cursor:pointer;font-family:var(--font)}
+.copilot-link:hover{color:#005F55}
+.copilot-plan{display:none;margin-top:20px;padding-top:18px;border-top:1px solid rgba(17,24,39,0.12);gap:10px}
+.copilot-plan.open{display:grid}
+.copilot-step{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:flex-start;color:#111827;font-size:14px;line-height:1.45}
+.copilot-step-num{width:26px;height:26px;border-radius:8px;background:rgba(15,159,138,0.12);color:#087A6C;display:grid;place-items:center;font-weight:900;font-family:var(--mono);font-size:12px}
+.copilot-step strong{display:block;color:#000000;margin-bottom:2px}
 
 /* ====== FEATURE TABS ====== */
 .feature-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}
@@ -956,14 +969,14 @@ body.role-resident .ai-hero{
     </div>
     <div class="role-card doctor" onclick="selectRole('doctor')">
       <div class="role-visual">🩺</div>
-      <span class="role-chip">🩺 Doctor / Clinical Team</span>
-      <h2>Doctor Dashboard</h2>
+      <span class="role-chip">🩺 Doctor / Admin / Clinical Team</span>
+      <h2>Doctor/Admin Dashboard</h2>
       <p>Access critical alerts, resident risk review, AI insights, labs, medication records, timelines, and clinical audit history.</p>
       <div class="role-points">
         <span>Clinical queues and escalation context</span>
         <span>Vitals, eMAR, labs, and audit controls</span>
       </div>
-      <button class="btn btn-primary btn-sm">Enter Doctor View →</button>
+      <button class="btn btn-primary btn-sm">Enter Doctor/Admin View →</button>
     </div>
     <div class="role-card patient" onclick="selectRole('resident')">
       <div class="role-visual">🏥</div>
@@ -1008,7 +1021,7 @@ body.role-resident .ai-hero{
         <div class="sb-item" data-page="alerts" data-roles="doctor" onclick="nav('alerts')"><span class="sb-item-ico">🔔</span><span class="sb-item-txt">Alerts</span><span class="sb-badge" id="sb-alert-badge">3</span></div>
         <div class="sb-section" data-roles="doctor">Doctor Tools</div>
         <div class="sb-item" data-page="critical" data-roles="doctor" onclick="nav('critical')"><span class="sb-item-ico">🚨</span><span class="sb-item-txt">Critical Review</span></div>
-        <div class="sb-item" data-page="book" data-roles="doctor,resident" onclick="nav('book')"><span class="sb-item-ico">📅</span><span class="sb-item-txt">Book & Schedule</span></div>
+        <div class="sb-item" data-page="book" data-roles="doctor" onclick="nav('book')"><span class="sb-item-ico">📅</span><span class="sb-item-txt">Book & Schedule</span></div>
         <div class="sb-item" data-page="vitals" data-roles="doctor,resident" data-doctor-label="Vitals Monitor" data-resident-label="Add Vitals" onclick="nav('vitals')"><span class="sb-item-ico">💓</span><span class="sb-item-txt">Vitals Monitor</span></div>
         <div class="sb-item" data-page="emar" data-roles="doctor" onclick="nav('emar')"><span class="sb-item-ico">💊</span><span class="sb-item-txt">eMAR</span></div>
         <div class="sb-item" data-page="notes" data-roles="doctor" onclick="nav('notes')"><span class="sb-item-ico">📝</span><span class="sb-item-txt">Shift Notes</span></div>
@@ -2085,7 +2098,8 @@ function toggleSidebar() {
 
 // ===== DASHBOARD =====
 function loadDash() {
-  document.getElementById('dash-greeting').textContent = currentRole === 'resident' ? 'My EHMR AI Health Dashboard' : 'EHMR AI – Smart Senior Health Dashboard';
+  document.getElementById('dash-greeting').textContent = currentRole === 'resident' ? 'My EHMR AI Health Dashboard' : 'Doctor/Admin Dashboard';
+  if (_currentPage === 'dashboard') document.getElementById('tb-title').textContent = currentRole === 'resident' ? 'Dashboard' : 'Doctor/Admin Dashboard';
   document.getElementById('dash-date').textContent =
     new Date().toLocaleDateString('en-IN', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const isPatient = currentRole === 'resident';
@@ -2106,7 +2120,8 @@ function loadDash() {
   document.getElementById('sb-alert-badge').textContent = ua.length;
   document.getElementById('tb-dot').style.display = ua.length ? '' : 'none';
   let given = 0, total = 0;
-  (medsData.R001 || []).forEach(m => {
+  const medsScope = isPatient ? (medsData.R001 || []) : Object.values(medsData).flat();
+  medsScope.forEach(m => {
     total += m.times.length;
     given += m.times.filter(t => t.status === 'given').length;
   });
@@ -2150,7 +2165,7 @@ function loadDash() {
     <div class="stat-card" onclick="nav('emar')">
       <span class="stat-ico">💊</span>
       <div class="stat-val" style="color:var(--amber)">${given}/${total}</div>
-      <div class="stat-lbl">Meds Given</div><div class="stat-sub">Today · Ramesh Iyer</div>
+      <div class="stat-lbl">Meds Given</div><div class="stat-sub">Today · all patients</div>
     </div>
     <div class="stat-card" onclick="nav('critical')">
       <span class="stat-ico">🧭</span>
@@ -3256,6 +3271,95 @@ function miniCalendarStrip() {
     return `<div class="cal-day ${count?'has-appt':''}"><div class="cal-date">${new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}</div>${count ? count + ' appointment' + (count>1?'s':'') : 'Free'}</div>`;
   }).join('')}</div></div>`;
 }
+function doctorPriorityTasks() {
+  const today = todayISO();
+  const todayAppointments = appointmentsData
+    .filter(a => a.date === today && appointmentStatus(a) === 'Scheduled')
+    .map(a => ({
+      time:a.time,
+      priority:(a.risk || localAIInsight(a.patientId).riskLevel) === 'High' ? 1 : 2,
+      title:`Visit ${patientName(a.patientId)}`,
+      detail:`${a.reason || 'Doctor review'} · ${a.doctorName}`,
+      badge:a.risk || localAIInsight(a.patientId).riskLevel,
+      action:`openAppointmentModal('${a.patientId}','${a.risk || 'Routine'}','${(a.reason || 'Doctor review').replace(/'/g, "\\'")}')`
+    }));
+  const alertTasks = unacked().map(a => ({
+    time:'',
+    priority:a.sev === 'critical' ? 1 : a.sev === 'warning' ? 2 : 3,
+    title:`Review alert: ${a.res}`,
+    detail:`${a.room} · ${a.msg}`,
+    badge:a.sev === 'critical' ? 'Critical' : a.sev === 'warning' ? 'Warning' : 'Info',
+    action:`nav('alerts')`
+  }));
+  const riskTasks = RESIDENTS.map(r => ({r, assessment:healthAssessment(r.id)}))
+    .filter(x => x.assessment.riskLevel === 'High' || x.assessment.visitNeeded || x.assessment.score < 75)
+    .map(x => ({
+      time:'',
+      priority:x.assessment.riskLevel === 'High' ? 1 : 2,
+      title:`Clinical review: ${x.r.name}`,
+      detail:`Room ${x.r.room} · ${x.assessment.visitWindow}`,
+      badge:`${x.assessment.riskLevel} · ${x.assessment.score}`,
+      action:`nav('residents');setTimeout(()=>viewRes('${x.r.id}'),80)`
+    }));
+  const medicationTasks = Object.entries(medsData).flatMap(([resId, meds]) => meds.flatMap(m => m.times
+    .filter(d => d.status === 'overdue' || d.status === 'pending')
+    .map(d => ({
+      time:d.t,
+      priority:d.status === 'overdue' ? 1 : 3,
+      title:`Medication follow-up: ${patientName(resId)}`,
+      detail:`${m.name} · ${d.status}`,
+      badge:d.status === 'overdue' ? 'Overdue' : 'Pending',
+      action:`nav('emar')`
+    }))));
+  const labTasks = Object.entries(labsData).flatMap(([resId, labs]) => labs
+    .filter(l => l.status !== 'normal')
+    .slice(0, 1)
+    .map(l => ({
+      time:'',
+      priority:l.status === 'high' || l.status === 'low' ? 2 : 3,
+      title:`Lab review: ${patientName(resId)}`,
+      detail:`${l.test} ${l.result}${l.unit || ''} · ${l.status}`,
+      badge:'Lab',
+      action:`nav('labs')`
+    })));
+  const rows = [...todayAppointments, ...alertTasks, ...riskTasks, ...medicationTasks, ...labTasks]
+    .sort((a, b) => (a.priority - b.priority) || timeMinutes(a.time || '23:59') - timeMinutes(b.time || '23:59'))
+    .slice(0, 8)
+    .map((item, index) => ({...item, time:item.time || minuteTime(9 * 60 + index * 30)}));
+  return {rows, todayAppointments};
+}
+function doctorDayScheduleHTML() {
+  const {rows, todayAppointments} = doctorPriorityTasks();
+  const criticalCount = rows.filter(r => r.priority === 1).length;
+  const top = rows[0];
+  const appointmentsCount = todayAppointments.length;
+  const patientsCount = new Set(rows.map(item => item.title.split(': ').pop().replace('Visit ', '').replace('Review alert: ', '').replace('Medication follow-up: ', '').replace('Lab review: ', ''))).size;
+  const brief = top
+    ? `You have <strong>${criticalCount || rows.length} priority action${(criticalCount || rows.length) === 1 ? '' : 's'}</strong> across ${patientsCount} patient${patientsCount === 1 ? '' : 's'} today${appointmentsCount ? `, including ${appointmentsCount} appointment${appointmentsCount === 1 ? '' : 's'}` : ''}. I recommend starting with <strong>${top.title.replace(/^[^:]+: /, '').replace('Visit ', '')}</strong>, because ${top.detail.toLowerCase()}.`
+    : `You have <strong>no urgent clinical actions</strong> flagged today. I recommend doing a quick resident round, then checking labs and medication adherence before new appointments are added.`;
+  return `<div class="card dash-extra doctor-day-schedule copilot-brief">
+    <div class="copilot-title"><span class="copilot-icon">✣</span><span>Daily Copilot Brief</span></div>
+    <div class="copilot-copy">"${brief}"</div>
+    <button class="copilot-link" onclick="generateDoctorActionPlan()">Generate action plan →</button>
+    <div class="copilot-plan" id="doctor-action-plan"></div>
+  </div>`;
+}
+function generateDoctorActionPlan() {
+  const slot = document.getElementById('doctor-action-plan');
+  if (!slot) return;
+  const {rows} = doctorPriorityTasks();
+  const steps = rows.slice(0, 4);
+  slot.innerHTML = steps.length ? steps.map((item, index) => `
+    <div class="copilot-step">
+      <div class="copilot-step-num">${index + 1}</div>
+      <div><strong>${displayTime(item.time)} · ${item.title}</strong>${item.detail}<br><button class="copilot-link" style="margin-top:6px;font-size:13px" onclick="${item.action}">Open task →</button></div>
+    </div>`).join('') : `
+    <div class="copilot-step">
+      <div class="copilot-step-num">1</div>
+      <div><strong>Start routine clinical round</strong>No urgent AI actions are currently flagged. Review stable residents, medication adherence, and lab queue.</div>
+    </div>`;
+  slot.classList.add('open');
+}
 function reminderQueueHTML() {
   const now = new Date(), start = now.getHours()*60 + now.getMinutes(), end = start + 120;
   const rows = [];
@@ -3307,10 +3411,15 @@ const _loadDashBase = loadDash;
 loadDash = function() {
   _loadDashBase();
   document.querySelectorAll('#page-dashboard .dash-extra').forEach(el => el.remove());
+  const aiGrid = document.querySelector('#page-dashboard .ai-grid');
+  if (aiGrid) {
+    aiGrid.style.display = currentRole === 'doctor' ? 'none' : '';
+    if (currentRole === 'doctor') aiGrid.insertAdjacentHTML('beforebegin', doctorDayScheduleHTML());
+  }
   const rightCol = document.querySelector('#page-dashboard .grid-2 > div:last-child');
   if (rightCol) {
     if (currentRole === 'resident') rightCol.insertAdjacentHTML('afterbegin', patientNextStepsHTML());
-    else rightCol.insertAdjacentHTML('afterbegin', `<div class="dash-extra">${miniCalendarStrip()}</div>` + servicesTodayHTML().replace('<div class="card">', '<div class="card dash-extra">'));
+    else rightCol.insertAdjacentHTML('afterbegin', servicesTodayHTML().replace('<div class="card">', '<div class="card dash-extra">'));
   }
   const leftCol = document.querySelector('#page-dashboard .grid-2 > div:first-child');
   if (leftCol) {
